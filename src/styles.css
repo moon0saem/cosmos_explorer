@@ -144,6 +144,7 @@ canvas { position: absolute; inset: 0; }
 .intro-copy h1 span { color: #a9b8cc; font-size: clamp(24px, 3.4vw, 49px); animation: intro-rise .85s .18s both; }
 .intro-copy h1 strong { margin-top: 7px; color: #f5f9ff; font-size: clamp(42px, 6.7vw, 92px); font-weight: 650; text-shadow: 0 0 38px rgba(123,228,255,.14); animation: intro-rise .9s .3s both; }
 .home-intro-copy h1 strong { max-width: 940px; font-size: clamp(38px, 5.2vw, 70px); line-height: 1.12; }
+.home-intro-copy h1 span { margin-top: 13px; color: #a9b8cc; font-size: clamp(17px, 2.1vw, 29px); font-weight: 480; letter-spacing: -.035em; }
 .landscape-tip { display: flex; align-items: center; gap: 14px; width: max-content; max-width: 100%; margin-top: 18px; padding: 11px 17px 11px 13px; color: #91a6c1; border: 1px solid rgba(123,228,255,.38); border-radius: 12px; background: linear-gradient(120deg, rgba(20,54,82,.82), rgba(7,19,36,.78)); box-shadow: 0 10px 32px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.05); animation: intro-rise .8s .4s both; }
 .landscape-tip > div:last-child { display: grid; gap: 4px; }
 .landscape-tip strong { color: #e5fbff; font-size: 13px; font-weight: 760; letter-spacing: -.015em; }
@@ -351,6 +352,7 @@ canvas { position: absolute; inset: 0; }
   .intro-copy h1 span { font-size: clamp(21px, 6.5vw, 32px); }
   .intro-copy h1 strong { font-size: clamp(39px, 12.5vw, 61px); line-height: 1.06; }
   .home-intro-copy h1 strong { font-size: clamp(31px, 9.2vw, 46px); line-height: 1.14; }
+  .home-intro-copy h1 span { margin-top: 9px; font-size: clamp(15px, 4.6vw, 21px); line-height: 1.35; }
   .landscape-tip { gap: 10px; margin-top: 12px; padding: 8px 11px 8px 9px; }
   .landscape-tip strong { font-size: 11px; }
   .landscape-tip span { font-size: 7px; }
@@ -415,6 +417,7 @@ canvas { position: absolute; inset: 0; }
   .intro-copy h1 span { font-size: 25px; }
   .intro-copy h1 strong { font-size: 51px; }
   .home-intro-copy h1 strong { font-size: 40px; }
+  .home-intro-copy h1 span { margin-top: 7px; font-size: 18px; }
   .landscape-tip { margin-top: 8px; padding-block: 7px; }
   .intro-usage { grid-template-columns: repeat(3, minmax(0, 1fr)); width: min(620px, 100%); margin-top: 13px; }
   .intro-usage article { grid-template-columns: 62px 1fr; min-height: 62px; padding: 4px 8px 4px 2px; }
