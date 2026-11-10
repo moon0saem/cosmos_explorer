@@ -890,7 +890,7 @@ function TypeLegend() {
   )
 }
 
-const ADDRESS_PRELUDE_TEXT = '학교의 땅에서 출발해 지구와 태양계, 우리은하를 지나 더 넓은 우주까지 나아가 보세요. 크고 작은 우주 구조 속에서 내가 있는 곳은 어디인지, 나의 우주 주소를 함께 찾아봅시다.'
+const ADDRESS_PRELUDE_TEXT = '우리가 지금 있는 학교에서 출발해, 지구, 태양계를 지나 더 넓은 우주까지 나아가봅시다.\n크고 작은 우주 구조 속에서 내가 있는 곳은 어디인지, 나의 우주 주소를 함께 찾아봅시다.'
 
 function AddressPrelude({ onComplete }) {
   const [typedText, setTypedText] = useState('')
