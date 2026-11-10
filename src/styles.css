@@ -144,11 +144,14 @@ canvas { position: absolute; inset: 0; }
 .intro-copy h1 span { color: #a9b8cc; font-size: clamp(24px, 3.4vw, 49px); animation: intro-rise .85s .18s both; }
 .intro-copy h1 strong { margin-top: 7px; color: #f5f9ff; font-size: clamp(42px, 6.7vw, 92px); font-weight: 650; text-shadow: 0 0 38px rgba(123,228,255,.14); animation: intro-rise .9s .3s both; }
 .home-intro-copy h1 strong { max-width: 940px; font-size: clamp(38px, 5.2vw, 70px); line-height: 1.12; }
-.landscape-tip { display: flex; align-items: center; gap: 8px; width: max-content; max-width: 100%; margin-top: 15px; padding: 7px 11px; color: #8799b2; border: 1px solid rgba(123,228,255,.18); border-radius: 999px; background: rgba(7,19,36,.6); font-size: 9px; animation: intro-rise .8s .4s both; }
-.landscape-tip i { display: grid; place-items: center; width: 20px; height: 13px; color: var(--cyan); border: 1px solid rgba(123,228,255,.55); border-radius: 2px; font-size: 0; font-style: normal; transform: rotate(0deg); }
-.landscape-tip i::after { content: ''; width: 2px; height: 2px; border-radius: 50%; background: var(--cyan); }
-.landscape-tip strong { color: #dff8ff; font-size: 9px; }
-.landscape-tip span { color: #778aa5; }
+.landscape-tip { display: flex; align-items: center; gap: 14px; width: max-content; max-width: 100%; margin-top: 18px; padding: 11px 17px 11px 13px; color: #91a6c1; border: 1px solid rgba(123,228,255,.38); border-radius: 12px; background: linear-gradient(120deg, rgba(20,54,82,.82), rgba(7,19,36,.78)); box-shadow: 0 10px 32px rgba(0,0,0,.24), inset 0 1px rgba(255,255,255,.05); animation: intro-rise .8s .4s both; }
+.landscape-tip > div:last-child { display: grid; gap: 4px; }
+.landscape-tip strong { color: #e5fbff; font-size: 13px; font-weight: 760; letter-spacing: -.015em; }
+.landscape-tip span { color: #91a6c1; font-size: 9px; }
+.landscape-device { position: relative; display: grid; place-items: center; flex: 0 0 47px; width: 47px; height: 36px; }
+.landscape-device i { display: block; width: 35px; height: 22px; border: 2px solid #bcefff; border-radius: 4px; box-shadow: 0 0 13px rgba(123,228,255,.28); }
+.landscape-device i::after { content: ''; position: absolute; top: 17px; right: 8px; width: 3px; height: 3px; border-radius: 50%; background: var(--cyan); }
+.landscape-device b { position: absolute; left: -2px; top: -6px; color: var(--cyan); font-size: 18px; font-weight: 400; text-shadow: 0 0 8px rgba(123,228,255,.65); transform: rotate(-32deg); }
 .intro-usage { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; width: min(680px, 100%); margin-top: 27px; animation: intro-rise .8s .48s both; }
 .intro-usage article { display: grid; grid-template-columns: 84px 1fr; align-items: center; min-height: 92px; padding: 10px 12px 10px 9px; border: 1px solid rgba(145,184,224,.16); border-radius: 10px; background: linear-gradient(145deg, rgba(14,30,53,.68), rgba(5,12,27,.72)); box-shadow: inset 0 1px rgba(255,255,255,.035); }
 .intro-usage article > div:last-child { display: grid; gap: 5px; min-width: 0; }
@@ -348,8 +351,12 @@ canvas { position: absolute; inset: 0; }
   .intro-copy h1 span { font-size: clamp(21px, 6.5vw, 32px); }
   .intro-copy h1 strong { font-size: clamp(39px, 12.5vw, 61px); line-height: 1.06; }
   .home-intro-copy h1 strong { font-size: clamp(31px, 9.2vw, 46px); line-height: 1.14; }
-  .landscape-tip { margin-top: 11px; padding: 6px 9px; }
-  .landscape-tip span { display: none; }
+  .landscape-tip { gap: 10px; margin-top: 12px; padding: 8px 11px 8px 9px; }
+  .landscape-tip strong { font-size: 11px; }
+  .landscape-tip span { font-size: 7px; }
+  .landscape-device { flex-basis: 39px; width: 39px; height: 30px; }
+  .landscape-device i { width: 31px; height: 19px; }
+  .landscape-device i::after { top: 14px; right: 5px; }
   .intro-usage { grid-template-columns: 1fr; gap: 6px; width: min(300px, 100%); margin-top: 18px; }
   .intro-usage article { grid-template-columns: 65px 1fr; min-height: 60px; padding: 4px 9px 4px 3px; }
   .gesture-picture { transform: scale(.76); transform-origin: center; }
@@ -408,7 +415,7 @@ canvas { position: absolute; inset: 0; }
   .intro-copy h1 span { font-size: 25px; }
   .intro-copy h1 strong { font-size: 51px; }
   .home-intro-copy h1 strong { font-size: 40px; }
-  .landscape-tip { margin-top: 8px; padding-block: 5px; }
+  .landscape-tip { margin-top: 8px; padding-block: 7px; }
   .intro-usage { grid-template-columns: repeat(3, minmax(0, 1fr)); width: min(620px, 100%); margin-top: 13px; }
   .intro-usage article { grid-template-columns: 62px 1fr; min-height: 62px; padding: 4px 8px 4px 2px; }
   .gesture-picture { transform: scale(.72); }

@@ -923,7 +923,7 @@ function AddressPrelude({ onComplete }) {
   return (
     <div className="intro-copy address-prelude-copy">
       <p className="intro-kicker">FROM SCHOOL TO THE COSMOS</p>
-      <h1><span>멀어지며 찾는</span><strong>나의 우주 주소</strong></h1>
+      <h1><span>밖으로 떠나는</span><strong>우주 주소 여행</strong></h1>
       <p className="address-typing" aria-live="polite">
         {typedText}<i className="typing-cursor" aria-hidden="true" />
       </p>
@@ -949,9 +949,12 @@ function IntroScreen({ phase, leaving, onStart, onMilkyWay, onPreludeComplete })
       <div className="intro-orbits" aria-hidden="true"><i /><i /><i /></div>
       <div className="intro-flight-path" aria-hidden="true"><i /></div>
       <div className="intro-copy home-intro-copy">
-        <p className="intro-kicker">TWO WAYS TO EXPLORE</p>
-        <h1 id="intro-title"><span>두 개의 탐사, 하나의 질문</span><strong>우주를 바라보는 두 개의 시선</strong></h1>
-        <div className="landscape-tip"><i aria-hidden="true">▭</i><strong>가로 모드 권장</strong><span>더 넓은 화면에서 우주를 편하게 탐색할 수 있어요.</span></div>
+        <p className="intro-kicker">TWO JOURNEYS THROUGH SPACE</p>
+        <h1 id="intro-title"><span>지금 여기에서, 두 방향으로</span><strong>우주를 만나는 두 가지 여행</strong></h1>
+        <div className="landscape-tip">
+          <div className="landscape-device" aria-hidden="true"><i /><b>↻</b></div>
+          <div><strong>태블릿은 가로 모드로 돌려 주세요</strong><span>더 넓은 화면에서 우주를 편하고 생생하게 탐색할 수 있어요.</span></div>
+        </div>
         <div className="intro-usage" aria-label="사용 방법">
           <article>
             <div className="gesture-picture drag-picture" aria-hidden="true"><i className="gesture-screen" /><i className="gesture-finger" /><b>↔</b></div>
@@ -968,10 +971,10 @@ function IntroScreen({ phase, leaving, onStart, onMilkyWay, onPreludeComplete })
         </div>
         <div className="intro-choices" aria-label="탐사 모드 선택">
           <button className="intro-choice primary" onClick={onStart} disabled={leaving}>
-            <span><strong>멀어지며 찾는 나의 우주 주소</strong><small>학교에서 관측 가능한 우주까지</small></span><i aria-hidden="true">→</i>
+            <span><strong>밖으로 떠나는 우주 주소 여행</strong><small>학교에서 관측 가능한 우주까지</small></span><i aria-hidden="true">→</i>
           </button>
           <button className="intro-choice" onClick={onMilkyWay} disabled={leaving}>
-            <span><strong>가까이 들여다보는 우리은하</strong><small>돌리고 비교하며 은하의 구조 발견하기</small></span><i aria-hidden="true">→</i>
+            <span><strong>안으로 들어가는 우리은하 여행</strong><small>돌리고 비교하며 은하의 구조 발견하기</small></span><i aria-hidden="true">→</i>
           </button>
         </div>
       </div>
@@ -1176,7 +1179,7 @@ export default function App() {
           />
         </Canvas>
       </div>
-      <header className="brand"><div className="brand-mark" aria-hidden="true"><span /></div><div><p>COSMIC SCALE JOURNEY</p><h1>멀어지며 찾는 나의 우주 주소</h1></div></header>
+      <header className="brand"><div className="brand-mark" aria-hidden="true"><span /></div><div><p>OUTWARD JOURNEY</p><h1>밖으로 떠나는 우주 주소 여행</h1></div></header>
       <button className="global-home-tab" onClick={returnToHome} aria-label="처음 화면으로 돌아가기"><span>⌂</span> 처음으로</button>
       <section className="stage-title" aria-live="polite"><p>{stage.eyebrow}</p><h2>{stage.label}</h2></section>
       <section className="status-card" aria-label="현재 탐색 범위"><div className="status-topline"><span>ZOOM LEVEL</span><strong>{zoomLevel.toFixed(1)}</strong></div><div className="progress-track"><span style={{ width: `${zoomLevel / MAX_ZOOM * 100}%` }} /></div><div className="scale-readout"><span>현재 시야의 너비</span><strong>{formatScale(zoomLevel)}</strong></div></section>

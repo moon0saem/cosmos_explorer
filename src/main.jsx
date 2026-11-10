@@ -14,7 +14,7 @@ function RootRouter() {
   }, [])
 
   useEffect(() => {
-    document.title = path === '/milky-way' ? '가까이 들여다보는 우리은하 | 우주를 바라보는 두 개의 시선' : '우주를 바라보는 두 개의 시선'
+    document.title = path === '/milky-way' ? '안으로 들어가는 우리은하 여행 | 우주를 만나는 두 가지 여행' : '우주를 만나는 두 가지 여행'
   }, [path])
 
   return path === '/milky-way' ? <MilkyWayPage /> : <App />
