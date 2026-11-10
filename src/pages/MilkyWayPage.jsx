@@ -87,7 +87,7 @@ function DistributionObjects({ highlight, onSelect }) {
   return <>{openClusters.map((object) => <ClusterGlyph key={object.id} object={object} position={NAMED_POSITIONS[object.id]} globular={false} highlighted={highlight === 'open' || (highlight === 'nebula' && object.id === 'pleiades')} onSelect={onSelect} />)}{NEBULAE.map((object) => <NebulaGlyph key={object.id} object={object} position={NAMED_POSITIONS[object.id]} highlighted={highlight === 'nebula'} onSelect={onSelect} />)}</>
 }
 
-function HaloClusterField({ highlighted, prominent }) {
+function HaloClusterField({ prominent }) {
   const points = useMemo(() => {
     const random = seededRandom(731905), values = []
     for (let clusterIndex = 0; clusterIndex < 16; clusterIndex += 1) {
@@ -113,13 +113,13 @@ function HaloClusterField({ highlighted, prominent }) {
     }
     return new Float32Array(values)
   }, [])
-  return <PulseGroup position={[0, 0, 0]} active={highlighted}><PointCloud positions={points} color="#b6c7df" size={prominent ? .13 : .105} opacity={prominent ? .52 : .32} /></PulseGroup>
+  return <PointCloud positions={points} color="#b6c7df" size={prominent ? .13 : .105} opacity={prominent ? .52 : .32} />
 }
 
 function HaloGlobularClusters({ highlight, onSelect, mode }) {
   const globularClusters = CLUSTERS.filter((object) => object.subtype.includes('구상성단'))
   const featured = mode === 'distribution'
-  return <><HaloClusterField highlighted={highlight === 'globular'} prominent={featured} />{globularClusters.map((object) => <ClusterGlyph key={object.id} object={object} position={NAMED_POSITIONS[object.id]} globular highlighted={highlight === 'globular'} onSelect={onSelect} emphasized={featured} color={featured ? (object.id === 'm13' ? '#ffd39c' : '#cde7ff') : '#e2ddcf'} />)}</>
+  return <><HaloClusterField prominent={featured} />{globularClusters.map((object) => <ClusterGlyph key={object.id} object={object} position={NAMED_POSITIONS[object.id]} globular highlighted={highlight === 'globular'} onSelect={onSelect} emphasized={featured} color={featured ? (object.id === 'm13' ? '#ffd39c' : '#cde7ff') : '#e2ddcf'} />)}</>
 }
 
 function SolarPositionMarker() {
