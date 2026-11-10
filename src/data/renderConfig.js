@@ -44,7 +44,8 @@ export const RENDER_CONFIG = {
 
   'milky-way': { ...galaxyBase, renderPosition: asPosition(SPACE_ANCHORS.galacticCenter), visualScale: 1180, visibleFromZoom: 67, visibleUntilZoom: 108, labelFromZoom: 76 },
   andromeda: { ...galaxyBase, visualScale: 1550, color: '#d5e5ff', accent: '#fff0cf', labelFromZoom: 91 },
-  m32: { ...galaxyBase, visualScale: 145, color: '#e7d5bd', accent: '#fff1dc', labelFromZoom: 94 },
+  // M32는 안드로메다 원반과 투영상 겹치므로 실제 표시 위치는 유지하고 터치 판정만 카메라 쪽으로 둔다.
+  m32: { ...galaxyBase, visualScale: 145, color: '#e7d5bd', accent: '#fff1dc', labelFromZoom: 94, interactionDepthOffset: 380, hitAreaScale: 0.24 },
   triangulum: { ...galaxyBase, visualScale: 390, labelFromZoom: 94 },
   lmc: { ...galaxyBase, visualScale: 300, color: '#8fb9e8', labelFromZoom: 93 },
   'local-group': { ...galaxyBase, renderPosition: { x: 0, y: 0, z: 0 }, visualScale: 6200, color: '#52698d', accent: '#7be4ff', visibleFromZoom: 94, visibleUntilZoom: 118, labelFromZoom: 97, labelUntilZoom: 111 },

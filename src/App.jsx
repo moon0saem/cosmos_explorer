@@ -549,7 +549,12 @@ function Galaxy({ object, zoomLevel, onSelect, selected, focused, navigation }) 
         <bufferGeometry><bufferAttribute attach="attributes-position" args={[particles, 3]} /></bufferGeometry>
         <pointsMaterial map={starTexture} alphaTest={0.015} color={object.color} size={isMilkyWay ? 5.2 : isAndromeda ? 10.5 : 7.5} sizeAttenuation transparent opacity={opacity * 0.98} blending={THREE.AdditiveBlending} depthWrite={false} />
       </points>
-      {canSelect && <HitArea radius={object.visualScale * 0.18} onSelect={() => onSelect(object)} />}
+      {/* 실제/압축 렌더 위치는 유지하고, 겹친 천체만 선택 판정 깊이를 분리한다. */}
+      {canSelect && (
+        <group position={[0, 0, object.interactionDepthOffset ?? 0]}>
+          <HitArea radius={object.visualScale * (object.hitAreaScale ?? 0.18)} onSelect={() => onSelect(object)} />
+        </group>
+      )}
       <ObjectLabel object={object} zoomLevel={zoomLevel} offset={object.visualScale * 0.68} selected={selected} />
     </group>
   )
