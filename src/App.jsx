@@ -3,7 +3,7 @@ import { Billboard, Html, Line, Sparkles } from '@react-three/drei'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import {
-  ALL_OBJECTS, BREADCRUMBS, CLUSTERS, GALAXIES, LARGE_SCALE_STRUCTURES, MAX_ZOOM,
+  ALL_OBJECTS, CLUSTERS, GALAXIES, LARGE_SCALE_STRUCTURES, MAX_ZOOM,
   NEBULAE, SCHOOL_LOCATION, SOLAR_SYSTEM_OBJECTS, SPACE_ANCHORS, STARS, ZOOM_STAGES,
 } from './data/catalog.js'
 import { formatDistanceFromEarth, positionOf, publicAssetUrl } from './data/astronomy.js'
@@ -1165,7 +1165,6 @@ export default function App() {
     return () => cancelAnimationFrame(frame)
   }, [])
 
-  const activeIndex = BREADCRUMBS.length - 1 - [...BREADCRUMBS].reverse().findIndex((item) => zoomLevel >= item.at)
   const selectedId = selectedObject?.id
   return (
     <main className="app-shell">
@@ -1189,7 +1188,6 @@ export default function App() {
       <section className="stage-title" aria-live="polite"><p>{stage.eyebrow}</p><h2>{stage.label}</h2></section>
       <section className="status-card" aria-label="현재 탐색 범위"><div className="status-topline"><span>ZOOM LEVEL</span><strong>{zoomLevel.toFixed(1)}</strong></div><div className="progress-track"><span style={{ width: `${zoomLevel / MAX_ZOOM * 100}%` }} /></div><div className="scale-readout"><span>현재 시야의 너비</span><strong>{formatScale(zoomLevel)}</strong></div></section>
       <nav className="zoom-rail" aria-label="우주 규모 단계">{ZOOM_STAGES.map((item, index) => <button key={item.label} className={stage.label === item.label ? 'active' : ''} onClick={() => setZoomTarget((item.min + Math.min(item.max, MAX_ZOOM)) / 2)} aria-label={`${item.label} 단계로 이동`}><span>{String(index + 1).padStart(2, '0')}</span><i /><em>{item.label}</em></button>)}</nav>
-      <nav className="location-breadcrumb" aria-label="현재 위치가 속한 공간"><span className="breadcrumb-title">현재 위치</span><div>{BREADCRUMBS.map((item, index) => <span key={item.label} className={index === activeIndex ? 'active' : index < activeIndex ? 'passed' : ''}>{item.label}{index < BREADCRUMBS.length - 1 && <i>›</i>}</span>)}</div></nav>
       <button className="home-button" onClick={returnToEarth}><span>⌂</span> 지구로 돌아가기</button>
       {zoomLevel >= 52 && zoomLevel < 90 && <TypeLegend />}
       <div className={`pinch-help ${showHelp ? 'visible' : ''}`}><div className="pinch-icon"><i /><i /></div><p><strong>두 손가락을 오므려</strong><br />우주 밖으로 여행하세요</p><small>마우스 휠도 사용할 수 있어요</small></div>
