@@ -890,14 +890,68 @@ function TypeLegend() {
   )
 }
 
-function IntroScreen({ leaving, onStart, onMilkyWay }) {
+const ADDRESS_PRELUDE_TEXT = '학교의 땅에서 출발해 지구와 태양계, 우리은하를 지나 더 넓은 우주까지 나아가 보세요. 크고 작은 우주 구조 속에서 내가 있는 곳은 어디인지, 나의 우주 주소를 함께 찾아봅시다.'
+
+function AddressPrelude({ onComplete }) {
+  const [typedText, setTypedText] = useState('')
+
+  useEffect(() => {
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (reduceMotion) {
+      setTypedText(ADDRESS_PRELUDE_TEXT)
+      const finish = window.setTimeout(onComplete, 1300)
+      return () => window.clearTimeout(finish)
+    }
+
+    let index = 0
+    let finish
+    const typing = window.setInterval(() => {
+      index += 1
+      setTypedText(ADDRESS_PRELUDE_TEXT.slice(0, index))
+      if (index >= ADDRESS_PRELUDE_TEXT.length) {
+        window.clearInterval(typing)
+        finish = window.setTimeout(onComplete, 1450)
+      }
+    }, 42)
+
+    return () => {
+      window.clearInterval(typing)
+      window.clearTimeout(finish)
+    }
+  }, [onComplete])
+
+  return (
+    <div className="intro-copy address-prelude-copy">
+      <p className="intro-kicker">FROM SCHOOL TO THE COSMOS</p>
+      <h1><span>멀어지며 찾는</span><strong>나의 우주 주소</strong></h1>
+      <p className="address-typing" aria-live="polite">
+        {typedText}<i className="typing-cursor" aria-hidden="true" />
+      </p>
+      <div className="address-prelude-progress" aria-hidden="true"><span /></div>
+    </div>
+  )
+}
+
+function IntroScreen({ phase, leaving, onStart, onMilkyWay, onPreludeComplete }) {
+  if (phase === 'address') {
+    return (
+      <section className={`intro-screen address-prelude ${leaving ? 'is-leaving' : ''}`} aria-label="나의 우주 주소 탐사 소개">
+        <div className="intro-orbits" aria-hidden="true"><i /><i /><i /></div>
+        <div className="intro-flight-path" aria-hidden="true"><i /></div>
+        <AddressPrelude onComplete={onPreludeComplete} />
+        <div className="intro-ground" aria-hidden="true"><span /><i /></div>
+      </section>
+    )
+  }
+
   return (
     <section className={`intro-screen ${leaving ? 'is-leaving' : ''}`} aria-labelledby="intro-title">
       <div className="intro-orbits" aria-hidden="true"><i /><i /><i /></div>
       <div className="intro-flight-path" aria-hidden="true"><i /></div>
-      <div className="intro-copy">
-        <p className="intro-kicker">SPACE EXPLORATION</p>
-        <h1 id="intro-title"><span>어디에서 탐사를 시작할까요?</span><strong>우주 탐사</strong></h1>
+      <div className="intro-copy home-intro-copy">
+        <p className="intro-kicker">TWO WAYS TO EXPLORE</p>
+        <h1 id="intro-title"><span>두 개의 탐사, 하나의 질문</span><strong>우주를 바라보는 두 개의 시선</strong></h1>
+        <div className="landscape-tip"><i aria-hidden="true">▭</i><strong>가로 모드 권장</strong><span>더 넓은 화면에서 우주를 편하게 탐색할 수 있어요.</span></div>
         <div className="intro-usage" aria-label="사용 방법">
           <article>
             <div className="gesture-picture drag-picture" aria-hidden="true"><i className="gesture-screen" /><i className="gesture-finger" /><b>↔</b></div>
@@ -914,10 +968,10 @@ function IntroScreen({ leaving, onStart, onMilkyWay }) {
         </div>
         <div className="intro-choices" aria-label="탐사 모드 선택">
           <button className="intro-choice primary" onClick={onStart} disabled={leaving}>
-            <span>우주 속 나의 주소</span><i aria-hidden="true">→</i>
+            <span><strong>멀어지며 찾는 나의 우주 주소</strong><small>학교에서 관측 가능한 우주까지</small></span><i aria-hidden="true">→</i>
           </button>
           <button className="intro-choice" onClick={onMilkyWay} disabled={leaving}>
-            <span>우리은하 관찰</span><i aria-hidden="true">→</i>
+            <span><strong>가까이 들여다보는 우리은하</strong><small>돌리고 비교하며 은하의 구조 발견하기</small></span><i aria-hidden="true">→</i>
           </button>
         </div>
       </div>
@@ -948,6 +1002,7 @@ export default function App() {
   const [showHelp, setShowHelp] = useState(true)
   const [showIntro, setShowIntro] = useState(true)
   const [introLeaving, setIntroLeaving] = useState(false)
+  const [introPhase, setIntroPhase] = useState('menu')
   const canvasArea = useRef(null)
   const introTimer = useRef(null)
   const targetZoom = useRef(2)
@@ -1068,10 +1123,16 @@ export default function App() {
     setZoomLevel(2)
     setShowHelp(true)
     setIntroLeaving(false)
+    setIntroPhase('menu')
     setShowIntro(true)
   }, [])
 
   const startExploration = useCallback(() => {
+    if (introLeaving || introPhase !== 'menu') return
+    setIntroPhase('address')
+  }, [introLeaving, introPhase])
+
+  const completeAddressPrelude = useCallback(() => {
     if (introLeaving) return
     setIntroLeaving(true)
     introTimer.current = window.setTimeout(() => setShowIntro(false), 900)
@@ -1115,7 +1176,7 @@ export default function App() {
           />
         </Canvas>
       </div>
-      <header className="brand"><div className="brand-mark" aria-hidden="true"><span /></div><div><p>MY COSMIC ADDRESS</p><h1>우주 속 나의 주소</h1></div></header>
+      <header className="brand"><div className="brand-mark" aria-hidden="true"><span /></div><div><p>COSMIC SCALE JOURNEY</p><h1>멀어지며 찾는 나의 우주 주소</h1></div></header>
       <button className="global-home-tab" onClick={returnToHome} aria-label="처음 화면으로 돌아가기"><span>⌂</span> 처음으로</button>
       <section className="stage-title" aria-live="polite"><p>{stage.eyebrow}</p><h2>{stage.label}</h2></section>
       <section className="status-card" aria-label="현재 탐색 범위"><div className="status-topline"><span>ZOOM LEVEL</span><strong>{zoomLevel.toFixed(1)}</strong></div><div className="progress-track"><span style={{ width: `${zoomLevel / MAX_ZOOM * 100}%` }} /></div><div className="scale-readout"><span>현재 시야의 너비</span><strong>{formatScale(zoomLevel)}</strong></div></section>
@@ -1126,7 +1187,7 @@ export default function App() {
       <div className={`pinch-help ${showHelp ? 'visible' : ''}`}><div className="pinch-icon"><i /><i /></div><p><strong>두 손가락을 오므려</strong><br />우주 밖으로 여행하세요</p><small>마우스 휠도 사용할 수 있어요</small></div>
       <p className="scale-note">천체의 표시 크기는 실제 비율과 다르며 관찰하기 쉽게 조정되어 있습니다. 성단·성운·외부 은하 사진은 지구에서 관측한 2차원 모습으로, 화면의 깊이는 실제 3차원 구조와 다를 수 있습니다.</p>
       <ObservableUniverseNotice zoomLevel={zoomLevel} />
-      {showIntro && <IntroScreen leaving={introLeaving} onStart={startExploration} onMilkyWay={startMilkyWayExploration} />}
+      {showIntro && <IntroScreen phase={introPhase} leaving={introLeaving} onStart={startExploration} onMilkyWay={startMilkyWayExploration} onPreludeComplete={completeAddressPrelude} />}
     </main>
   )
 }
