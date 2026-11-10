@@ -6,7 +6,7 @@ import {
   ALL_OBJECTS, BREADCRUMBS, CLUSTERS, GALAXIES, LARGE_SCALE_STRUCTURES, MAX_ZOOM,
   NEBULAE, SCHOOL_LOCATION, SOLAR_SYSTEM_OBJECTS, SPACE_ANCHORS, STARS, ZOOM_STAGES,
 } from './data/catalog.js'
-import { formatDistanceFromEarth, positionOf } from './data/astronomy.js'
+import { formatDistanceFromEarth, positionOf, publicAssetUrl } from './data/astronomy.js'
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 const smoothstep = (start, end, value) => {
@@ -127,7 +127,7 @@ function ObservationImage({ object, opacity, scale }) {
     let active = true
     let loadedTexture = null
     new THREE.TextureLoader().load(
-      object.image,
+      publicAssetUrl(object.image),
       (nextTexture) => {
         if (!active) { nextTexture.dispose(); return }
         loadedTexture = nextTexture

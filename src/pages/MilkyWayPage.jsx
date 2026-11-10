@@ -3,6 +3,7 @@ import { Html, Line } from '@react-three/drei'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { CLUSTERS, NEBULAE } from '../data/catalog.js'
+import { publicAssetUrl } from '../data/astronomy.js'
 
 const MODES = [['shape', '모양 탐사'], ['distribution', '대표적인 천체'], ['measure', '우리은하와 태양계'], ['earth', '지구에서 바라보기']]
 const CATEGORIES = [['open', '산개성단'], ['globular', '구상성단'], ['nebula', '성운']]
@@ -172,7 +173,7 @@ function GalaxyCamera({ view, orbit, distance, mode, yearAngle }) {
 
 function ObjectCard({ object, onClose }) {
   if (!object) return null
-  return <aside className={`mw-object-card ${object.image ? 'has-image' : ''}`}><button onClick={onClose} aria-label="천체 정보 닫기">×</button>{object.image && <figure key={`${object.id}-observation`}><img src={object.image} alt={`${object.nameKo} 관측 이미지`} loading="eager" /><figcaption>지구에서 관측한 실제 이미지</figcaption></figure>}<small>{object.type} · {object.subtype}</small><h2>{object.nameKo}</h2><p className="mw-object-en">{object.nameEn}</p><p><strong>지구에서의 거리</strong>{formatPcDistance(object)}</p><p>{object.description}</p></aside>
+  return <aside className={`mw-object-card ${object.image ? 'has-image' : ''}`}><button onClick={onClose} aria-label="천체 정보 닫기">×</button>{object.image && <figure key={`${object.id}-observation`}><img src={publicAssetUrl(object.image)} alt={`${object.nameKo} 관측 이미지`} loading="eager" /><figcaption>지구에서 관측한 실제 이미지</figcaption></figure>}<small>{object.type} · {object.subtype}</small><h2>{object.nameKo}</h2><p className="mw-object-en">{object.nameEn}</p><p><strong>지구에서의 거리</strong>{formatPcDistance(object)}</p><p>{object.description}</p></aside>
 }
 
 function EarthViewPanel({ angle, setAngle, playing, setPlaying }) {
@@ -217,6 +218,6 @@ export default function MilkyWayPage() {
     {mode === 'distribution' && <div className="mw-emphasis-controls">{CATEGORIES.map(([id, label]) => <button key={id} className={highlight === id ? `active filter-${id}` : ''} onClick={() => triggerHighlight(id)}>{label}</button>)}</div>}
     {mode === 'earth' && <EarthViewPanel angle={yearAngle} setAngle={setYearAngle} playing={playing} setPlaying={setPlaying} />}
     <button className="mw-overview-button" onClick={() => { setMode('shape'); setView('top'); setPlaying(false) }}>우리은하 전체 보기</button><ObjectCard object={selected} onClose={() => setSelected(null)} />
-    {showIntro && <section className={`mw-entry-image ${introLeaving ? 'is-leaving' : ''}`} aria-label="우리은하 탐사 시작"><img src="/astronomy/milky-way-explorer-intro.png" alt="관측 자료를 바탕으로 재구성한 막대나선형 우리은하 모식도" /><div><small>MILKY WAY EXPLORATION</small><strong>우리은하 안으로 들어갑니다</strong></div></section>}
+    {showIntro && <section className={`mw-entry-image ${introLeaving ? 'is-leaving' : ''}`} aria-label="우리은하 탐사 시작"><img src={publicAssetUrl('/astronomy/milky-way-explorer-intro.png')} alt="관측 자료를 바탕으로 재구성한 막대나선형 우리은하 모식도" /><div><small>MILKY WAY EXPLORATION</small><strong>우리은하 안으로 들어갑니다</strong></div></section>}
   </main>
 }

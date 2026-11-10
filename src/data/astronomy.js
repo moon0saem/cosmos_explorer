@@ -2,6 +2,12 @@ export const LIGHT_YEARS_PER_PARSEC = 3.261563777
 export const AU_PER_PARSEC = 206264.80624709636
 export const KM_PER_AU = 149597870.7
 
+/** public 폴더 자산을 로컬 개발과 GitHub Pages 하위 경로에서 모두 찾는다. */
+export function publicAssetUrl(path) {
+  if (!path || /^(?:https?:|data:)/.test(path)) return path
+  return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`
+}
+
 const DEG_TO_RAD = Math.PI / 180
 const emptyCartesian = () => ({ x: null, y: null, z: null })
 const hasNumber = (value) => Number.isFinite(value)
