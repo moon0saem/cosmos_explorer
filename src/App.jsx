@@ -950,7 +950,7 @@ function IntroScreen({ phase, leaving, onStart, onMilkyWay, onPreludeComplete })
       <div className="intro-flight-path" aria-hidden="true"><i /></div>
       <div className="intro-copy home-intro-copy">
         <p className="intro-kicker">THE UNIVERSE AND ME</p>
-        <h1 id="intro-title"><span>두 가지 탐사로 만나는</span><strong>우주와 나</strong></h1>
+        <h1 id="intro-title"><span>우주 탐사로 만나는</span><strong>우주와 나</strong></h1>
         <div className="landscape-tip">
           <div className="landscape-device" aria-hidden="true"><i /><b>↻</b></div>
           <div><strong>태블릿은 가로 모드로 돌려 주세요</strong><span>더 넓은 화면에서 우주를 편하고 생생하게 탐색할 수 있어요.</span></div>
