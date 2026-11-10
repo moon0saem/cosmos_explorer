@@ -29,7 +29,7 @@ const objectOpacity = (object, zoom) => {
 }
 const FEATURED_LABEL_IDS = new Set([
   'earth', 'moon', 'sun', 'proxima-centauri', 'sirius', 'pleiades',
-  'm13', 'orion-nebula', 'milky-way', 'andromeda', 'm32',
+  'm13', 'orion-nebula', 'milky-way', 'andromeda', 'm32', 'triangulum', 'lmc',
   'local-group', 'virgo-cluster', 'laniakea',
 ])
 
@@ -895,7 +895,7 @@ function TypeLegend() {
   )
 }
 
-const ADDRESS_PRELUDE_TEXT = '우리가 지금 있는 학교에서 출발해, 지구, 태양계를 지나 더 넓은 우주까지 나아가봅시다.\n크고 작은 우주 구조 속에서 내가 있는 곳은 어디인지, 나의 우주 주소를 함께 찾아봅시다.'
+const ADDRESS_PRELUDE_TEXT = '우리가 지금 있는 학교에서 출발해, 지구, 태양계를 지나 더 넓은 우주까지 나아가봅시다.\n크고 작은 우주 구조 속에서 내가 있는 곳은 어디인지, 나의 우주 주소를 함께 찾아볼까요?'
 
 function AddressPrelude({ onComplete }) {
   const [typedText, setTypedText] = useState('')

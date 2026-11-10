@@ -11,7 +11,7 @@ const external = [
   {
     id: 'm32', nameKo: 'M32 은하', nameEn: 'Messier 32', subtype: '왜소 조밀 타원은하',
     distanceLy: 2500000, raDeg: 10.67427, decDeg: 40.86517, image: '/astronomy/m32.jpg',
-    description: '안드로메다은하 주위를 도는 작고 조밀한 타원은하입니다. 나선팔이 보이지 않고 오래된 별들이 매끈한 타원 모양으로 모여 있습니다.',
+    description: 'M32는 안드로메다은하 주위를 도는 작고 조밀한 타원은하입니다. 나선팔이 없고, 많은 별이 중심에 빽빽하게 모여 매끈한 타원 모양으로 보입니다.',
     educationalNote: 'NASA는 M32를 지구에서 약 250만 광년 떨어진 안드로메다은하의 위성은하로 소개합니다.',
     sourceName: 'NASA Science · SIMBAD',
     sourceUrl: 'https://science.nasa.gov/mission/hubble/science/explore-the-night-sky/hubble-messier-catalog/messier-32/',
