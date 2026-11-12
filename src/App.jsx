@@ -880,7 +880,7 @@ function ObjectInfoCard({ object, detailed, onClose, onExplore }) {
         </div>
         <p className="description">{object.description}</p>
         {(object.image || object.id === 'milky-way') && !detailed && <div className="info-card-actions">
-          <button className="explore-button" onClick={(event) => { event.stopPropagation(); onExplore(object) }}>{object.id === 'milky-way' ? '우리은하 탐사하기' : '이 천체 자세히 보기'}</button>
+          <button className={`explore-button ${object.id === 'milky-way' ? '' : 'attention-pulse'}`} onClick={(event) => { event.stopPropagation(); onExplore(object) }}>{object.id === 'milky-way' ? '우리은하 탐사하기' : '이 천체 자세히 보기'}</button>
         </div>}
       </article>
     </Html>
@@ -894,6 +894,26 @@ function TypeLegend() {
         <span key={label}><i className={`legend-${icon}`} />{label}</span>
       ))}
     </div>
+  )
+}
+
+function ExplorationTutorial({ step }) {
+  if (!step) return null
+  const isPinch = step === 'pinch'
+  return (
+    <aside className={`exploration-tutorial tutorial-${step}`} aria-live="polite">
+      {isPinch
+        ? <div className="pinch-icon" aria-hidden="true"><i /><i /></div>
+        : <div className="earth-tap-icon" aria-hidden="true"><i /><b /></div>}
+      <div className="tutorial-copy">
+        <small>조작 안내 · {isPinch ? '1 / 2' : '2 / 2'}</small>
+        <strong>{isPinch ? '두 손가락을 천천히 오므려 보세요' : '지구를 눌러 보세요'}</strong>
+        <p>{isPinch
+          ? '화면을 축소하며 학교에서 더 큰 우주로 나아갈 수 있어요.'
+          : '천체를 누르면 이름과 거리, 특징을 확인할 수 있어요.'}</p>
+        {isPinch && <em>마우스에서는 휠을 아래로 움직여 보세요.</em>}
+      </div>
+    </aside>
   )
 }
 
@@ -1009,7 +1029,8 @@ export default function App() {
   const [zoomLevel, setZoomLevel] = useState(2)
   const [selectedObject, setSelectedObject] = useState(null)
   const [focusedId, setFocusedId] = useState(null)
-  const [showHelp, setShowHelp] = useState(true)
+  const [tutorialStep, setTutorialStep] = useState('pinch')
+  const [earthTutorialDone, setEarthTutorialDone] = useState(false)
   const [showIntro, setShowIntro] = useState(true)
   const [introLeaving, setIntroLeaving] = useState(false)
   const [introPhase, setIntroPhase] = useState('menu')
@@ -1048,13 +1069,27 @@ export default function App() {
   const setZoomTarget = useCallback((value) => {
     const next = constrainZoom(value)
     targetZoom.current = next
-    setShowHelp(false)
+    setTutorialStep((step) => step === 'pinch' ? null : step)
     return next
   }, [constrainZoom])
   const selectObject = useCallback((object) => {
     setSelectedObject(object)
     setFocusedId(null)
+    if (object.id === 'earth') {
+      setTutorialStep(null)
+      setEarthTutorialDone(true)
+    }
   }, [])
+
+  useEffect(() => {
+    if (showIntro || earthTutorialDone) return
+    if (zoomLevel >= 18 && zoomLevel < 31) {
+      setTutorialStep((step) => step === null ? 'earth' : step)
+    } else if (zoomLevel >= 31) {
+      setTutorialStep((step) => step === 'earth' ? null : step)
+      setEarthTutorialDone(true)
+    }
+  }, [earthTutorialDone, showIntro, zoomLevel])
 
   useEffect(() => {
     const area = canvasArea.current
@@ -1131,7 +1166,8 @@ export default function App() {
     setSelectedObject(null)
     targetZoom.current = 2
     setZoomLevel(2)
-    setShowHelp(true)
+    setTutorialStep('pinch')
+    setEarthTutorialDone(false)
     setIntroLeaving(false)
     setIntroPhase('menu')
     setShowIntro(true)
@@ -1192,7 +1228,7 @@ export default function App() {
       <nav className="zoom-rail" aria-label="우주 규모 단계">{ZOOM_STAGES.map((item, index) => <button key={item.label} className={stage.label === item.label ? 'active' : ''} onClick={() => setZoomTarget((item.min + Math.min(item.max, MAX_ZOOM)) / 2)} aria-label={`${item.label} 단계로 이동`}><span>{String(index + 1).padStart(2, '0')}</span><i /><em>{item.label}</em></button>)}</nav>
       <button className="home-button" onClick={returnToEarth}><span>⌂</span> 지구로 돌아가기</button>
       {zoomLevel >= 52 && zoomLevel < 90 && <TypeLegend />}
-      <div className={`pinch-help ${showHelp ? 'visible' : ''}`}><div className="pinch-icon"><i /><i /></div><p><strong>두 손가락을 오므려</strong><br />우주 밖으로 여행하세요</p><small>마우스 휠도 사용할 수 있어요</small></div>
+      {!showIntro && <ExplorationTutorial key={tutorialStep ?? 'complete'} step={tutorialStep} />}
       <p className="scale-note">천체의 표시 크기는 실제 비율과 다르며 관찰하기 쉽게 조정되어 있습니다. 성단·성운·외부 은하 사진은 지구에서 관측한 2차원 모습으로, 화면의 깊이는 실제 3차원 구조와 다를 수 있습니다.</p>
       <ObservableUniverseNotice zoomLevel={zoomLevel} />
       {showIntro && <IntroScreen phase={introPhase} leaving={introLeaving} onStart={startExploration} onMilkyWay={startMilkyWayExploration} onPreludeComplete={completeAddressPrelude} />}
