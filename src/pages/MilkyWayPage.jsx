@@ -5,8 +5,30 @@ import * as THREE from 'three'
 import { CLUSTERS, NEBULAE } from '../data/catalog.js'
 import { publicAssetUrl } from '../data/astronomy.js'
 
-const MODES = [['shape', '모양 탐사'], ['distribution', '대표적인 천체'], ['measure', '우리은하와 태양계'], ['earth', '지구에서 바라보기']]
+const MODES = [['shape', '모양 탐사'], ['distribution', '대표적인 천체'], ['measure', '우리은하의 크기와 태양계의 위치'], ['earth', '지구에서 바라보기']]
 const CATEGORIES = [['open', '산개성단'], ['globular', '구상성단'], ['nebula', '성운']]
+const MODE_GUIDES = {
+  shape: {
+    step: '1. 모양 탐사',
+    title: '우리은하는 어떤 모양일까요?',
+    description: '우리은하를 위·옆·자유 시점에서 바라보며, 여러 각도에서 어떤 모양으로 보이는지 탐색해 보세요.',
+  },
+  distribution: {
+    step: '2. 대표적인 천체',
+    title: '우리은하에는 어떤 천체가 있을까요?',
+    description: '산개성단·구상성단·성운 버튼을 누르면 해당 종류의 대표 천체가 3초 동안 깜빡여요. 천체를 누르면 정보와 사진도 볼 수 있어요.',
+  },
+  measure: {
+    step: '3. 우리은하의 크기와 태양계의 위치',
+    title: '우리은하에서 태양계는 어디에 있을까요?',
+    description: '우리은하의 지름, 태양계의 위치, 태양계와 은하 중심 사이의 거리를 차례로 눌러 확인해 보세요.',
+  },
+  earth: {
+    step: '4. 지구에서 바라보기',
+    title: '지구에서는 우리은하가 어떻게 보일까요?',
+    description: '계절을 바꾸거나 1년 동안 보기를 눌러, 지구의 밤 방향과 은하수 모습이 어떻게 달라지는지 관찰해 보세요.',
+  },
+}
 const SOLAR_POSITION = new THREE.Vector3(20.5, 0, -6.5)
 const GALAXY_RADIUS = 38
 const SEASONS = [
@@ -165,7 +187,8 @@ function GalaxyCamera({ view, orbit, distance, mode, yearAngle }) {
     let desired, target = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0), desiredFov = 48
     if (mode === 'earth') { const { nightDirection } = earthOrbitState(yearAngle); desired = SOLAR_POSITION.clone().add(new THREE.Vector3(0, .35, 0)); target = desired.clone().addScaledVector(nightDirection, 18); desiredFov = 72 }
     else if (view === 'top') { desired = new THREE.Vector3(0, 70, .01); up = new THREE.Vector3(0, 0, -1) }
-    else if (view === 'side') desired = new THREE.Vector3(0, 7, 72)
+    // 원반은 X-Z 평면, 두께는 Y축이므로 Y=0에서 중심을 보는 방향이 정확한 측면 시점이다.
+    else if (view === 'side') desired = new THREE.Vector3(0, 0, 76)
     else { const r = distance.current; desired = new THREE.Vector3(Math.sin(orbit.current.yaw) * Math.cos(orbit.current.pitch) * r, Math.sin(orbit.current.pitch) * r, Math.cos(orbit.current.yaw) * Math.cos(orbit.current.pitch) * r) }
     const easing = 1 - Math.exp(-delta * 3.2); camera.position.lerp(desired, easing); camera.up.lerp(up, easing).normalize(); camera.fov = THREE.MathUtils.lerp(camera.fov, desiredFov, easing); camera.lookAt(target); camera.near = mode === 'earth' ? .025 : .1; camera.updateProjectionMatrix()
   })
@@ -175,6 +198,11 @@ function GalaxyCamera({ view, orbit, distance, mode, yearAngle }) {
 function ObjectCard({ object, onClose }) {
   if (!object) return null
   return <aside className={`mw-object-card ${object.image ? 'has-image' : ''}`}><button onClick={onClose} aria-label="천체 정보 닫기">×</button>{object.image && <figure key={`${object.id}-observation`}><img src={publicAssetUrl(object.image)} alt={`${object.nameKo} 관측 이미지`} loading="eager" /><figcaption>지구에서 관측한 실제 이미지</figcaption></figure>}<small>{object.type} · {object.subtype}</small><h2>{object.nameKo}</h2><p className="mw-object-en">{object.nameEn}</p><p><strong>지구에서의 거리</strong>{formatPcDistance(object)}</p><p>{object.description}</p></aside>
+}
+
+function ModeGuide({ mode, onClose }) {
+  const guide = MODE_GUIDES[mode]
+  return <aside className="mw-mode-guide" aria-live="polite"><button onClick={onClose} aria-label="탐사 안내 닫기">×</button><small>{guide.step}</small><h2>{guide.title}</h2><p>{guide.description}</p></aside>
 }
 
 function EarthViewPanel({ angle, setAngle, playing, setPlaying }) {
@@ -203,6 +231,7 @@ export default function MilkyWayPage() {
   const [measurement, setMeasurement] = useState(null), [selected, setSelected] = useState(null), [showScienceNote, setShowScienceNote] = useState(false)
   const [yearAngle, setYearAngle] = useState(0), [playing, setPlaying] = useState(false)
   const [showIntro, setShowIntro] = useState(true), [introLeaving, setIntroLeaving] = useState(false)
+  const [showModeGuide, setShowModeGuide] = useState(true)
   const highlightTimer = useRef(null)
   const interaction = useRef(null), gesture = useRef({ type: null, x: 0, y: 0, distance: 0 }), orbit = useRef({ yaw: .65, pitch: .42 }), cameraDistance = useRef(73)
   useEffect(() => { if (!playing) return undefined; let frame, previous = performance.now(); const animate = (now) => { const delta = Math.min(.05, (now - previous) / 1000); previous = now; setYearAngle((value) => (value + delta * .42) % (Math.PI * 2)); frame = requestAnimationFrame(animate) }; frame = requestAnimationFrame(animate); return () => cancelAnimationFrame(frame) }, [playing])
@@ -217,15 +246,16 @@ export default function MilkyWayPage() {
     area.addEventListener('touchstart', start, { passive: false }); area.addEventListener('touchmove', move, { passive: false }); area.addEventListener('wheel', wheel, { passive: false })
     return () => { area.removeEventListener('touchstart', start); area.removeEventListener('touchmove', move); area.removeEventListener('wheel', wheel) }
   }, [mode])
-  const selectMode = (next) => { setMode(next); setSelected(null); setPlaying(false); if (next === 'measure') setView('free'); else if (next === 'earth') setView('top') }
+  const selectMode = (next) => { setMode(next); setSelected(null); setPlaying(false); setShowModeGuide(true); if (next === 'measure') setView('free'); else if (next === 'earth') setView('top') }
   const triggerHighlight = (id) => { window.clearTimeout(highlightTimer.current); setHighlight(id); highlightTimer.current = window.setTimeout(() => setHighlight(null), 3000) }
   return <main className="milky-way-explorer"><div className="mw-canvas" ref={interaction} onPointerDown={(event) => { if (event.pointerType === 'touch') return; gesture.current = { type: 'mouse', x: event.clientX, y: event.clientY }; event.currentTarget.setPointerCapture(event.pointerId) }} onPointerMove={(event) => { if (gesture.current.type !== 'mouse' || mode === 'earth') return; orbit.current.yaw -= (event.clientX - gesture.current.x) * .007; orbit.current.pitch = THREE.MathUtils.clamp(orbit.current.pitch + (event.clientY - gesture.current.y) * .005, -.05, 1.42); gesture.current.x = event.clientX; gesture.current.y = event.clientY; setView('free') }} onPointerUp={() => { gesture.current.type = null }}><Canvas camera={{ position: [30, 28, 58], fov: 48, near: .1, far: 500 }} dpr={[1, 1.5]} gl={{ antialias: true }} onPointerMissed={() => setSelected(null)}><color attach="background" args={['#01030a']} /><GalaxyModel mode={mode} highlight={highlight} measurement={measurement} yearAngle={yearAngle} onSelect={setSelected} /><GalaxyCamera view={view} orbit={orbit} distance={cameraDistance} mode={mode} yearAngle={yearAngle} /></Canvas></div>
     <header className="mw-header"><button className="milky-way-back" onClick={() => { window.location.hash = '' }} aria-label="처음 화면으로 돌아가기"><span>⌂</span> 처음으로</button><div><p>OUR HOME GALAXY</p><h1>내가 살고 있는 우리은하</h1><span>우리은하는 어떤 모습이고, 그 안에는 무엇이 있을까?</span></div><button className="mw-science-button" onClick={() => setShowScienceNote((value) => !value)}>i</button></header>
     {showScienceNote && <aside className="mw-science-note"><strong>관측 자료와 모식도의 구분</strong><p>우리은하 전체는 밖에서 촬영할 수 없습니다. 이 화면은 여러 파장의 관측 자료를 바탕으로 재구성한 교육용 모식도입니다. 지름은 약 30,000 pc(약 98,000광년), 태양계에서 중심까지의 거리는 약 8,500 pc(약 27,700광년)를 기준으로 표시했습니다.</p></aside>}
     <div className="mw-top-tools"><nav className="mw-mode-tabs" aria-label="우리은하 탐사 기능">{MODES.map(([id, label], index) => <button key={id} className={mode === id ? 'active' : ''} onClick={() => selectMode(id)}><span>{index + 1}</span>{label}</button>)}</nav>{mode === 'shape' && <div className="mw-view-controls"><button className={view === 'top' ? 'active' : ''} onClick={() => setView('top')}>위에서 보기</button><button className={view === 'side' ? 'active' : ''} onClick={() => setView('side')}>옆에서 보기</button><button className={view === 'free' ? 'active' : ''} onClick={() => setView('free')}>자유롭게 보기</button></div>}{mode === 'measure' && <div className="mw-measure-controls"><button className={measurement === 'diameter' ? 'active' : ''} onClick={() => setMeasurement('diameter')}>우리은하의 지름</button><button className={measurement === 'solar-position' ? 'active' : ''} onClick={() => setMeasurement('solar-position')}>태양계의 위치</button><button className={measurement === 'solar-center' ? 'active' : ''} onClick={() => setMeasurement('solar-center')}>태양계–중심 사이 거리</button></div>}</div>
+    {showModeGuide && <ModeGuide key={mode} mode={mode} onClose={() => setShowModeGuide(false)} />}
     {mode === 'distribution' && <div className="mw-emphasis-controls">{CATEGORIES.map(([id, label]) => <button key={id} className={highlight === id ? `active filter-${id}` : ''} onClick={() => triggerHighlight(id)}>{label}</button>)}</div>}
     {mode === 'earth' && <EarthViewPanel angle={yearAngle} setAngle={setYearAngle} playing={playing} setPlaying={setPlaying} />}
-    <button className="mw-overview-button" onClick={() => { setMode('shape'); setView('top'); setPlaying(false) }}>우리은하 전체 보기</button>{mode === 'distribution' && <ObjectCard object={selected} onClose={() => setSelected(null)} />}
+    <button className="mw-overview-button" onClick={() => { setMode('shape'); setView('top'); setPlaying(false); setShowModeGuide(true) }}>우리은하 전체 보기</button>{mode === 'distribution' && <ObjectCard object={selected} onClose={() => setSelected(null)} />}
     {showIntro && <section className={`mw-entry-image ${introLeaving ? 'is-leaving' : ''}`} aria-label="우리은하 탐사 시작"><img src={publicAssetUrl('/astronomy/milky-way-explorer-intro.png')} alt="관측 자료를 바탕으로 재구성한 막대나선형 우리은하 모식도" /><div><small>OUR HOME GALAXY</small><strong>내가 살고 있는 우리은하</strong></div></section>}
   </main>
 }

@@ -427,7 +427,7 @@ canvas { position: absolute; inset: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .intro-screen::before, .intro-copy > *, .intro-ground, .intro-orbits, .intro-flight-path i, .typing-cursor, .address-prelude-progress span, .exploration-tutorial, .earth-tap-icon b, .explore-button.attention-pulse { animation: none !important; }
+  .intro-screen::before, .intro-copy > *, .intro-ground, .intro-orbits, .intro-flight-path i, .typing-cursor, .address-prelude-progress span, .exploration-tutorial, .earth-tap-icon b, .explore-button.attention-pulse, .mw-mode-guide { animation: none !important; }
   .intro-screen { transition-duration: .2s; }
 }
 
@@ -435,6 +435,7 @@ canvas { position: absolute; inset: 0; }
 .mw-top-tools { position: absolute; z-index: 9; top: 106px; left: 50%; display: grid; justify-items: center; gap: 8px; transform: translateX(-50%); }
 .mw-top-tools .mw-mode-tabs { position: static; display: flex; gap: 6px; }
 .mw-top-tools .mw-mode-tabs button { justify-content: center; min-width: 128px; min-height: 40px; padding: 7px 10px; }
+.mw-top-tools .mw-mode-tabs button:nth-child(3) { min-width: 190px; }
 .mw-top-tools .mw-view-controls { position: static; transform: none; }
 .mw-emphasis-controls, .mw-measure-controls { position: absolute; z-index: 9; top: 164px; left: 50%; display: flex; gap: 7px; transform: translateX(-50%); padding: 5px; border: 1px solid rgba(148,180,220,.16); border-radius: 10px; background: rgba(4,10,23,.72); backdrop-filter: blur(13px); }
 .mw-top-tools .mw-measure-controls { position: static; max-width: min(100vw - 20px, 620px); transform: none; overflow-x: auto; }
@@ -449,6 +450,13 @@ canvas { position: absolute; inset: 0; }
 .mw-measure-label span { margin-top: 3px; color: var(--cyan); font-size: 13px; font-weight: 700; }
 .mw-measure-label small { margin-top: 3px; color: #64758c; font-size: 7px; }
 .mw-night-label { padding: 4px 7px; color: var(--cyan); border: 1px solid rgba(123,228,255,.35); border-radius: 12px; background: rgba(3,9,20,.82); font-size: 8px; white-space: nowrap; }
+.mw-mode-guide { position: absolute; z-index: 10; top: 50%; left: 24px; width: min(290px, calc(50vw - 42px)); padding: 16px 17px 15px; color: #eaf7ff; border: 1px solid rgba(123,228,255,.32); border-radius: 13px; background: linear-gradient(145deg, rgba(7,20,39,.93), rgba(3,9,21,.96)); box-shadow: 0 18px 52px rgba(0,0,0,.4), 0 0 28px rgba(83,188,225,.08); backdrop-filter: blur(16px); transform: translateY(-50%); animation: mw-guide-in .4s cubic-bezier(.2,.8,.2,1) both; }
+.mw-mode-guide > button { position: absolute; top: 8px; right: 9px; width: 27px; height: 27px; padding: 0; color: #8fa1b8; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; background: transparent; font-size: 18px; line-height: 1; cursor: pointer; }
+.mw-mode-guide > button:hover { color: #fff; border-color: rgba(123,228,255,.45); }
+.mw-mode-guide small { display: block; padding-right: 30px; color: var(--cyan); font-size: 8px; font-weight: 750; letter-spacing: .12em; }
+.mw-mode-guide h2 { margin: 7px 28px 0 0; font-size: 16px; font-weight: 650; line-height: 1.35; letter-spacing: -.035em; word-break: keep-all; }
+.mw-mode-guide p { margin: 9px 0 0; color: #a4b4c8; font-size: 10px; line-height: 1.65; word-break: keep-all; }
+@keyframes mw-guide-in { from { opacity: 0; transform: translateY(calc(-50% + 12px)) scale(.98); } to { opacity: 1; transform: translateY(-50%); } }
 
 .earth-view-panel { position: absolute; z-index: 10; top: 105px; right: 24px; bottom: 76px; width: 360px; display: grid; grid-template-rows: auto minmax(220px, 1.25fr) minmax(135px, .72fr) auto; gap: 8px; padding: 10px; overflow-y: auto; border: 1px solid rgba(148,180,220,.18); border-radius: 13px; background: rgba(3,9,21,.88); box-shadow: 0 20px 60px rgba(0,0,0,.36); backdrop-filter: blur(16px); }
 .earth-view-panel .season-controls { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
@@ -489,10 +497,14 @@ canvas { position: absolute; inset: 0; }
   .mw-top-tools { top: 70px; width: calc(100vw - 20px); }
   .mw-top-tools .mw-mode-tabs { width: 100%; }
   .mw-top-tools .mw-mode-tabs button { flex: 1; min-width: 0; min-height: 44px; padding: 6px 4px; font-size: 8px; }
+  .mw-top-tools .mw-mode-tabs button:nth-child(3) { min-width: 0; flex: 1.35; }
   .mw-top-tools .mw-mode-tabs button span { display: none; }
   .mw-top-tools .mw-view-controls { max-width: 100%; overflow-x: auto; }
   .mw-emphasis-controls, .mw-measure-controls { top: 122px; max-width: calc(100vw - 20px); overflow-x: auto; }
   .earth-view-panel { top: 122px; right: 10px; bottom: 62px; width: min(350px, 46vw); }
+  .mw-mode-guide { left: 10px; width: min(270px, calc(50vw - 20px)); padding: 13px 14px 12px; }
+  .mw-mode-guide h2 { font-size: 14px; }
+  .mw-mode-guide p { font-size: 9px; }
   .mw-overview-button { bottom: 66px; }
 }
 
@@ -501,7 +513,10 @@ canvas { position: absolute; inset: 0; }
   .mw-top-tools .mw-view-controls button { min-height: 38px; }
   .mw-emphasis-controls, .mw-measure-controls { top: 120px; }
   .mw-emphasis-controls button, .mw-measure-controls button { min-height: 38px; padding-inline: 10px; }
-  .earth-view-panel { top: 120px; right: 8px; bottom: 60px; width: min(310px, 62vw); grid-template-rows: auto minmax(170px, 1fr) auto minmax(120px, .7fr) auto; padding: 7px; gap: 5px; }
+  .earth-view-panel { top: 120px; right: 8px; bottom: 60px; width: min(310px, 62vw); grid-template-rows: auto minmax(170px, 1fr) minmax(120px, .7fr) auto; padding: 7px; gap: 5px; }
+  .mw-mode-guide { left: 8px; width: min(230px, calc(38vw - 12px)); padding: 11px 12px; }
+  .mw-mode-guide h2 { margin-top: 5px; font-size: 12px; }
+  .mw-mode-guide p { margin-top: 6px; font-size: 8px; line-height: 1.55; }
   .earth-local-orbit, .earth-night-sky { padding: 7px; }
   .earth-local-orbit svg { min-height: 145px; }
   .earth-view-panel .season-controls button { min-height: 32px; font-size: 8px; }
