@@ -32,6 +32,7 @@ const FEATURED_LABEL_IDS = new Set([
   'm13', 'orion-nebula', 'milky-way', 'andromeda', 'm32', 'triangulum', 'lmc',
   'local-group', 'virgo-cluster', 'laniakea',
 ])
+const NAMED_CATALOG_LABEL_TYPES = new Set(['별', '성단', '성운'])
 
 const CAMERA_STOPS = [
   [0, 0.045], [8, 0.12], [16, 1.7], [25, 5], [40, 90],
@@ -91,7 +92,8 @@ function CameraRig({ zoomLevel, orbit, navigation }) {
 }
 
 function ObjectLabel({ object, zoomLevel, offset = 1, selected }) {
-  const normalOpacity = !FEATURED_LABEL_IDS.has(object.id) ? 0 : fadeWindow(
+  const showCatalogLabel = FEATURED_LABEL_IDS.has(object.id) || NAMED_CATALOG_LABEL_TYPES.has(object.type)
+  const normalOpacity = !showCatalogLabel ? 0 : fadeWindow(
     zoomLevel,
     object.labelFromZoom,
     object.labelUntilZoom ?? MAX_ZOOM + 1,
