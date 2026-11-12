@@ -907,7 +907,7 @@ function ExplorationTutorial({ step }) {
         : <div className="earth-tap-icon" aria-hidden="true"><i /><b /></div>}
       <div className="tutorial-copy">
         <small>조작 안내 · {isPinch ? '1 / 2' : '2 / 2'}</small>
-        <strong>{isPinch ? '두 손가락을 천천히 오므려 보세요' : '지구를 눌러 보세요'}</strong>
+        <strong>{isPinch ? '두 손가락을 천천히 오므려 보세요' : '천체를 눌러 보세요'}</strong>
         <p>{isPinch
           ? '화면을 축소하며 학교에서 더 큰 우주로 나아갈 수 있어요.'
           : '천체를 누르면 이름과 거리, 특징을 확인할 수 있어요.'}</p>
