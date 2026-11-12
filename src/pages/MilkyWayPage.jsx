@@ -187,7 +187,14 @@ function EarthViewPanel({ angle, setAngle, playing, setPlaying }) {
   const nightX = earthX + nightDirection.x * 18
   const nightY = earthY + nightDirection.z * 18
   const direction = pathRatio > .66 ? '은하 중심 쪽' : pathRatio < .34 ? '은하 바깥쪽' : '은하 원반을 비스듬히 보는 방향'
-  const skyStyle = { '--band-opacity': .24 + pathRatio * .68, '--band-height': `${14 + pathRatio * 27}%`, '--band-blur': `${6.2 - pathRatio * 2.8}px` }
+  const centerEmphasis = Math.pow(pathRatio, 2.4)
+  const skyStyle = {
+    '--band-opacity': .18 + Math.pow(pathRatio, 1.7) * .82,
+    '--band-height': `${10 + centerEmphasis * 58}%`,
+    '--band-blur': `${7 - centerEmphasis * 4.2}px`,
+    '--band-core-opacity': centerEmphasis,
+    '--sky-star-opacity': .42 + centerEmphasis * .5,
+  }
   return <aside className="earth-view-panel"><div className="season-controls">{SEASONS.map((item) => <button key={item.id} className={nearest.id === item.id && !playing ? 'active' : ''} onClick={() => { setPlaying(false); setAngle(item.angle) }}>{item.label}</button>)}</div><section className="earth-local-orbit earth-galaxy-map"><h3>우리은하 위 태양계와 지구 공전</h3><svg viewBox="0 0 100 100" role="img" aria-label={`${nearest.label}의 지구 위치와 우리은하 안에서 바라보는 밤 방향`}><defs><radialGradient id="galaxyGlow"><stop offset="0" stopColor="#ffe0a8" stopOpacity=".9" /><stop offset=".24" stopColor="#83b9eb" stopOpacity=".42" /><stop offset="1" stopColor="#24476f" stopOpacity=".05" /></radialGradient><marker id="nightArrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0,0 L5,2.5 L0,5z" fill="#7be4ff" /></marker></defs><circle cx="50" cy="50" r="42" className="galaxy-map-disk" /><circle cx="50" cy="50" r="35" className="galaxy-map-arm" /><circle cx="50" cy="50" r="27" className="galaxy-map-arm arm-two" /><circle cx="50" cy="50" r="18" className="galaxy-map-arm arm-three" /><line x1="39" y1="56" x2="61" y2="44" className="galaxy-map-bar" /><circle cx="50" cy="50" r="3" className="galaxy-map-center" /><text x="43" y="47" className="galaxy-center-text">은하 중심</text><line x1={solarX} y1={solarY} x2="50" y2="50" className="center-guide" /><circle cx={solarX} cy={solarY} r="6.5" className="earth-orbit-large" /><circle cx={solarX} cy={solarY} r="2.4" className="season-sun" /><circle cx={earthX} cy={earthY} r="2.1" className="season-earth" /><line x1={solarX} y1={solarY} x2={earthX} y2={earthY} className="sun-ray" /><line x1={earthX} y1={earthY} x2={nightX} y2={nightY} className="night-arrow" markerEnd="url(#nightArrow)" /><text x={solarX + 3} y={solarY - 3}>태양계</text><text x={nightX + 1} y={nightY}>밤쪽</text></svg><p>지구 공전궤도는 우리은하 크기에 비해 매우 크게 확대했습니다.</p></section><section className="earth-night-sky" style={skyStyle}><h3>{nearest.label}에 보이는 은하수</h3><div className="season-band" /><span>{direction}을 바라보며 보이는 별의 겹침 정도를 반영했습니다.</span><small>위 3D 시점 및 공전 그림과 같은 밤 방향</small></section><div className="year-controls"><button onClick={() => setPlaying((value) => !value)}>{playing ? '일시정지' : '1년 동안 보기'}</button><button onClick={() => { setPlaying(false); setAngle(0) }}>처음으로</button></div></aside>
 }
 

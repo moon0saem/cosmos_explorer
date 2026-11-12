@@ -309,7 +309,8 @@ canvas { position: absolute; inset: 0; }
 .orbit-card p { position: absolute; left: 13px; right: 13px; bottom: 8px; margin: 0; color: #65758c; font-size: 8px; line-height: 1.4; }
 .season-sky { background: radial-gradient(circle at 50% 58%, rgba(25,44,77,.38), transparent 44%), linear-gradient(#02040b, #071020 60%, #030713) !important; }
 .season-sky::before { content: ''; position: absolute; inset: 0; opacity: .7; background-image: radial-gradient(circle, #fff 0 .7px, transparent 1px), radial-gradient(circle, #a9ccff 0 .6px, transparent 1px); background-size: 43px 43px, 71px 71px; background-position: 8px 11px, 21px 7px; }
-.season-band { position: absolute; left: -10%; top: 45%; width: 120%; height: var(--band-height); transform: rotate(-8deg) translateY(-50%); opacity: var(--band-opacity); background: radial-gradient(ellipse at 55% 50%, rgba(255,226,175,.75), rgba(166,200,242,.34) 28%, rgba(101,139,190,.09) 66%, transparent 75%); filter: blur(var(--band-blur)); }
+.season-band { position: absolute; left: -10%; top: 45%; width: 120%; height: var(--band-height); transform: rotate(-8deg) translateY(-50%); opacity: var(--band-opacity); background: radial-gradient(ellipse at 55% 50%, rgba(255,226,175,.78), rgba(166,200,242,.38) 28%, rgba(101,139,190,.1) 66%, transparent 75%); filter: blur(var(--band-blur)); transition: height .3s ease, opacity .3s ease, filter .3s ease; }
+.season-band::after { content: ''; position: absolute; inset: 8% 18%; border-radius: 50%; opacity: var(--band-core-opacity); background: radial-gradient(ellipse, rgba(255,236,196,.9), rgba(202,218,246,.42) 38%, transparent 76%); box-shadow: 0 0 28px rgba(255,220,165,.32); }
 .season-sky span, .season-sky small { position: absolute; z-index: 2; left: 13px; right: 13px; bottom: 34px; color: #b6c4d6; font-size: 9px; line-height: 1.5; }
 .season-sky small { bottom: 12px; color: #596a82; font-size: 7px; }
 .year-controls { display: flex; justify-content: center; gap: 7px; margin-top: 8px; pointer-events: auto; }
@@ -457,7 +458,7 @@ canvas { position: absolute; inset: 0; }
 .center-guide { stroke: rgba(255,213,145,.38); stroke-width: .55; stroke-dasharray: 2 1; }
 .earth-orbit-large { fill: none; stroke: rgba(123,228,255,.58); stroke-width: .55; stroke-dasharray: 1.5 1; }
 .earth-night-sky { min-height: 150px; background: radial-gradient(circle at 50% 58%, rgba(25,44,77,.38), transparent 44%), linear-gradient(#02040b, #071020 60%, #030713); }
-.earth-night-sky::before { content: ''; position: absolute; inset: 0; opacity: .68; background-image: radial-gradient(circle, #fff 0 .7px, transparent 1px), radial-gradient(circle, #a9ccff 0 .6px, transparent 1px); background-size: 43px 43px, 71px 71px; background-position: 8px 11px, 21px 7px; }
+.earth-night-sky::before { content: ''; position: absolute; inset: 0; opacity: var(--sky-star-opacity); background-image: radial-gradient(circle, #fff 0 .7px, transparent 1px), radial-gradient(circle, #a9ccff 0 .6px, transparent 1px); background-size: 43px 43px, 71px 71px; background-position: 8px 11px, 21px 7px; transition: opacity .3s ease; }
 .earth-night-sky .season-band { top: 47%; }
 .earth-night-sky > span, .earth-night-sky > small { position: absolute; z-index: 2; left: 10px; right: 10px; bottom: 27px; color: #aebed2; font-size: 8px; line-height: 1.4; }
 .earth-night-sky > span strong { color: var(--cyan); }
